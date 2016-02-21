@@ -3,67 +3,70 @@
 
 using namespace std;
 
-class DLinkedList
+class LinkedList
 {
 private:
     struct Node
     {
         int data;
-        Node *next,*prev;
+        Node *next;
     };
     Node *start, *end;
 public:
-    DLinkedList()
+    LinkedList()
     {
         start = NULL;
         end = NULL;
     }
-    void insert(int x,int p = 0)    //Inserts at the beginning
+    void insert(int x)    //Inserts at the beginning
     {
         Node *t = new Node();
         t->data = x;
         t->next = NULL;
-        t->prev = NULL;
-        Node *temp = start;
         if(start == NULL)
         {
             start = t;
             end = t;
+            t->next = t;
         }
-        else if(length() < p)
-            cout<<"\n\n Exception: index of insertion invalid \n\n";
         else
         {
-            while(p--)
-                temp = temp->next;
-            t->prev = temp->prev;
-            if(temp->prev != NULL)
-                temp->prev->next = t;
-            t->next = temp;
-            temp->prev = t;
+            t->next = start;
             start = t;
+            end->next = start;
         }
+    }
+    void del()       //deletes from the start
+    {
+        Node *t = start;
+        while(t != end)
+            t = t->next;
+        //We have now iterated till the last node the next one is the same as start
+        t->next = start->next;
+        Node *d = start;
+        start = start->next;
+        delete d;
     }
     void display()
     {
         Node *t = start;
-        while(t != NULL)
+        if(start != NULL)
         {
-            if(t != NULL)
+            while(t->next != start)
             {
-                cout<<t->data<<"<=>";
+                cout<<t->data<<"->";
                 t = t->next;
             }
         }
-        cout<<"!!!\n";
+        cout<<t->data<<"--wrap around--\n";
     }
-    int length()
+    int count()
     {
         Node *t = start;
         int c = 1;
         if(start != NULL)
         {
-            while(t->next != NULL)
+            while(t->next != start)
             {
                 c++;
                 t = t->next;
@@ -77,7 +80,7 @@ public:
 
 int main()
 {
-    DLinkedList l;
+    LinkedList l;
     l.insert(1);
     l.display();
     l.insert(2);
@@ -85,6 +88,8 @@ int main()
     l.insert(3);
     l.insert(4);
     l.display();
-    cout<<l.length()<<endl;
+    cout<<l.count()<<endl;
+    l.del();
+    cout<<l.count()<<endl;
     return 0;
 }
