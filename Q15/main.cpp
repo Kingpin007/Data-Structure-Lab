@@ -56,16 +56,14 @@ public:
             {
                 cout<<t->data<<"->";
                 t = t->next;
-                system("pause");
             }
         }
-        t = t->next;
-        cout<<t->data<<"wrap around\n";
+        cout<<t->data<<"--wrap around--\n";
     }
     int count()
     {
         Node *t = start;
-        int c = 0;
+        int c = 1;
         if(start != NULL)
         {
             while(t->next != start)
@@ -74,6 +72,8 @@ public:
                 t = t->next;
             }
         }
+        if(start == NULL)
+            return 0;
         return c;
     }
 };
@@ -82,7 +82,9 @@ int main()
 {
     LinkedList l;
     l.insert(1);
+    l.display();
     l.insert(2);
+    l.display();
     l.insert(3);
     l.insert(4);
     l.display();
